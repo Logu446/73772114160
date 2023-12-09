@@ -1,0 +1,29 @@
+---
+- name: My First Ansible Playbook
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Ensure a directory exists
+      file:
+        path: /home/osboxes/Documents/73772114160
+        state: directory
+
+    - name: Ensure a file exists
+      file:
+        path: /home/osboxes/Documents/73772114160/73772114160.txt
+        state: touch
+
+    - name: Install tree package
+      apt:
+        name: tree
+        state: present
+
+    - name: Gather package facts
+      ansible.builtin.package_facts:
+      register: packages
+
+    - name: Check if tree package is installed
+      debug:
+        msg: "tree package is installed"
+      when: "'tree' in packages.ansible_facts.packages.keys()"
+
